@@ -1,86 +1,130 @@
-# RPG Party Analyzer - Planning
+## Initial Architecture
 
-## Project Vision
+### GameCharacter
 
-Create a Java application that analyzes RPG party compositions by evaluating character statistics, roles, abilities, and class synergy. The goal is to provide meaningful feedback that helps users build stronger and more balanced parties.
+Stores information about one RPG character.
 
----
+Fields:
 
-## Version 1 Goals
+- name
+- characterClass
+- role
+- attack
+- defense
+- maxHp
+- abilityTypes
 
-- Create custom RPG characters
-- Assign character classes and roles
-- Input combat statistics
-- Add special abilities
-- Create a party
-- Analyze party composition
-- Display party ratings and feedback
+Responsibilities:
 
----
+- Store character data
+- Provide access to character information
 
-## Character Attributes
-
-Each character will contain:
-
-- Name
-- Class
-- Role
-- Attack
-- Defense
-- HP
-- Special Abilities
+The character should not calculate party scores or synergy.
 
 ---
 
-## Party Analysis Categories
+### Party
 
-The analyzer will evaluate:
+Stores a group of GameCharacter objects.
 
-- Attack
-- Defense
-- Survivability
-- Ability Coverage
-- Class Synergy
+Fields:
 
-Overall results will include:
+- partyName
+- members
+- maximumPartySize
 
-- Percentage Score
-- Letter Grade
-- x/5 Rating
-- Strengths
-- Weaknesses
-- Recommendations
+Responsibilities:
 
----
+- Add members
+- Remove members
+- Return the current party members
+- Check whether the party is full
 
-## Potential Classes
-
-- Character
-- Party
-- PartyAnalyzer
-- Ability
-- CharacterClass (Enum)
-- Role (Enum)
+The party owns the character collection but does not evaluate it.
 
 ---
 
-## Future Features
+### PartyAnalyzer
 
-- Automatic Party Builder
-- Boss Encounter Analysis
-- Equipment System
-- Expanded Ability Database
-- Save / Load Parties
-- Additional RPG Archetypes
+Analyzes a Party and produces category scores.
+
+Responsibilities:
+
+- Calculate attack score
+- Calculate defense score
+- Calculate survivability score
+- Calculate ability coverage score
+- Calculate synergy score
+- Calculate the overall percentage
+- Generate an AnalysisReport
 
 ---
 
-## Parking Lot
+### AnalysisReport
 
-Ideas that may be added in future versions:
+Stores the completed analysis results.
 
-- Elemental damage and resistances
-- Party presets
-- Enemy database
-- Strategy profiles (Balanced, Aggressive, Survival)
-- Encounter-specific recommendations
+Fields:
+
+- attackScore
+- defenseScore
+- survivabilityScore
+- abilityCoverageScore
+- synergyScore
+- overallPercentage
+- fivePointRating
+- strengths
+- weaknesses
+
+This allows the analyzer logic to remain separate from the console or future GUI.
+
+---
+
+## Initial Enums
+
+### CharacterClass
+
+- WARRIOR
+- KNIGHT
+- MAGE
+- RANGER
+- ROGUE
+- CLERIC
+- PALADIN
+- BARD
+- NECROMANCER
+
+### Role
+
+- TANK
+- MELEE_DAMAGE
+- RANGED_DAMAGE
+- HEALER
+- SUPPORT
+- CONTROL
+
+### AbilityType
+
+- AOE
+- HEALING
+- SHIELD
+- CROWD_CONTROL
+- BUFF
+- DEBUFF
+- TAUNT
+- REVIVE
+- MOBILITY
+
+---
+
+## Version 1 Rules
+
+- Parties contain up to four characters.
+- Attack and defense use a 1–10 scale.
+- HP must be a positive whole number.
+- Duplicate classes are allowed.
+- Duplicate roles are allowed.
+- Unbalanced role coverage may reduce the party rating.
+- Users may combine any class and role.
+- Version 1 will use a console interface.
+- A graphical interface may be added after the analyzer logic works.
