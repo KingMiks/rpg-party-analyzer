@@ -23,4 +23,54 @@ public class Party {
     public int getMemberCount(){
         return partyMembers.size();
     }
+
+    //delete member form party
+    public boolean removeMember(GameCharacter member){
+        if (member == null){
+            return false;
+        }
+        return partyMembers.remove(member);
+    }
+
+    //contains member within party
+    public boolean containsMember(GameCharacter member){
+        if (member == null){
+            return false;
+        }
+        return partyMembers.contains(member);
+    }
+
+    public static void main(String[] args){
+        Party party = new Party();
+
+        GameCharacter arthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.TANK, AbilityType.SHIELD, 100, 200, 300);
+
+        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.WARRIOR, Role.TANK, AbilityType.SHIELD, 100, 200, 300);
+
+        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.TANK, AbilityType.SHIELD, 100, 200, 300);
+        
+        System.out.println(party.addMember(arthur));
+        System.out.println(party.containsMember(lancelot));
+        System.out.println(party.containsMember(null));
+        System.out.println(party.containsMember(theSeparateArthur));
+        System.out.println(party.getMemberCount());
+        System.out.println(party.addMember(lancelot));
+        System.out.println(party.containsMember(lancelot));
+        System.out.println(party.getMemberCount());
+        System.out.println(party.removeMember(lancelot));
+        System.out.println(party.containsMember(lancelot));
+        System.out.println(party.getMemberCount());
+        System.out.println(party.removeMember(lancelot));
+        System.out.println(party.getMemberCount());
+        System.out.println(party.removeMember(null));
+        System.out.println(party.getMemberCount());
+        System.out.println(party.removeMember(arthur));
+        System.out.println(party.containsMember(arthur));
+        System.out.println(party.getMemberCount());
+    
+    
+    
+    
+    
+    }
 }
