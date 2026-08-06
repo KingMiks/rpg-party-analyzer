@@ -40,6 +40,17 @@ public class Party {
         return partyMembers.contains(member);
     }
 
+    //checks whether party is empty or not
+    public boolean isEmpty(){
+        return partyMembers.isEmpty();
+    }
+
+    public List<GameCharacter> getMembers(){
+        List<GameCharacter> partyMembersCopy = new ArrayList<>(partyMembers);
+        return partyMembersCopy;
+        
+    }
+
     public static void main(String[] args){
         Party party = new Party();
 
@@ -50,6 +61,7 @@ public class Party {
         GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.TANK, AbilityType.SHIELD, 100, 200, 300);
         
         System.out.println(party.addMember(arthur));
+        System.out.println(party.isEmpty());
         System.out.println(party.containsMember(lancelot));
         System.out.println(party.containsMember(null));
         System.out.println(party.containsMember(theSeparateArthur));
@@ -67,6 +79,10 @@ public class Party {
         System.out.println(party.removeMember(arthur));
         System.out.println(party.containsMember(arthur));
         System.out.println(party.getMemberCount());
+        System.out.println(party.isEmpty());
+        System.out.println(party.addMember(arthur));
+        System.out.println(party.getMembers().toString());
+        
     
     
     
