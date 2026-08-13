@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PartyAnalyzer {
-
+    /* Role analysis section */
     public Map<Role, Integer> countRoles(List<GameCharacter> members){
         Map<Role, Integer> countRoles = new HashMap<>();
 
@@ -92,41 +92,144 @@ public class PartyAnalyzer {
                 return 0;
         }
     }
+    /*Ability analysis section */
+
+    public Map<AbilityType, Integer> countAbilityTypes(List<GameCharacter> members){
+        Map<AbilityType, Integer> countAbilities = new HashMap<>();
+
+        if (members == null){
+            return countAbilities;
+        }
+
+        for (int i = 0; i < members.size(); i++){
+            AbilityType currentAbilityType = members.get(i).getAbilityType();
+
+            if (!countAbilities.containsKey(currentAbilityType)){
+                countAbilities.put(currentAbilityType, 1);
+            }
+            else {
+                int currentCount = countAbilities.get(currentAbilityType);
+                int updateCount = currentCount + 1;
+                countAbilities.put(currentAbilityType, updateCount);
+            }
+        }
+        return countAbilities;
+    }
+
+    public int countDefensiveAbilities(Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        int healingAbility = countAbilities.getOrDefault(AbilityType.HEALING, 0);
+        int reviveAbility = countAbilities.getOrDefault(AbilityType.REVIVE, 0);
+        int shieldAbility = countAbilities.getOrDefault(AbilityType.SHIELD, 0);
+        return healingAbility + shieldAbility + reviveAbility;
+    }
+
+    public int countEnemyInteractionAbilities(Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        int crowdControlAbility = countAbilities.getOrDefault(AbilityType.CROWD_CONTROL, 0);
+        int tauntAbility = countAbilities.getOrDefault(AbilityType.TAUNT, 0);
+        int aoeAbility = countAbilities.getOrDefault(AbilityType.AOE, 0);
+        return crowdControlAbility + tauntAbility + aoeAbility;
+    }
+
+    public int countUtilityAbilities(Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        int buffAbility = countAbilities.getOrDefault(AbilityType.BUFF, 0);
+        int debuffAbility = countAbilities.getOrDefault(AbilityType.DEBUFF, 0);
+        int movementAbility = countAbilities.getOrDefault(AbilityType.MOBILITY, 0);
+        return buffAbility + debuffAbility + movementAbility;
+    }
+
+    public int calculateCategorySpread(Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        int defensiveAbilityCount = countDefensiveAbilities(countAbilities);
+        int enemyInteractionsAbilityCount = countEnemyInteractionAbilities(countAbilities);
+        int utilityAbilityCount = countUtilityAbilities(countAbilities);
+        int findMax = Math.max(defensiveAbilityCount, enemyInteractionsAbilityCount);
+        int maxCategory = Math.max(findMax, utilityAbilityCount);
+        int findMin = Math.min(defensiveAbilityCount, enemyInteractionsAbilityCount);
+        int minCategory = Math.min(findMin, utilityAbilityCount);
+        int categoryDifference = maxCategory - minCategory;
+        return categoryDifference;
+    }
+
+    public int countUniqueAbilities (Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        return countAbilities.size();
+    }
+
+    public int calculateAbilityRating(Map<AbilityType, Integer> countAbilities){
+        if (countAbilities == null){
+            return 0;
+        }
+        int categoryDifference = calculateCategorySpread(countAbilities);
+        int defensiveAbilityCount = countDefensiveAbilities(countAbilities);
+        int enemyInteractionsAbilityCount = countEnemyInteractionAbilities(countAbilities);
+        int utilityAbilityCount = countUtilityAbilities(countAbilities);
+        int partySize = defensiveAbilityCount + enemyInteractionsAbilityCount + utilityAbilityCount;
+        if (partySize < 2){
+            return 0;
+        }
+        if (categoryDifference <= 1){
+            return 5;
+        }
+        else if (categoryDifference <= 3){
+            return 4;
+        }
+        else if (categoryDifference <= 5){
+            return 3;
+        }
+        else if (categoryDifference <= 7){
+            return 2;
+        }
+        else {
+            return 1;
+        }
+    }
+
     public static void main(String[] args){
         Party party = new Party();
         PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
 
         GameCharacter arthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
 
-        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.MAGE, Role.RANGED_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.MAGE, Role.RANGED_DAMAGE, AbilityType.TAUNT, 100, 200, 300);
 
-        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.BUFF, 100, 200, 300);
 
-        GameCharacter theSeparateLancelot = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter theSeparateLancelot = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.DEBUFF, 100, 200, 300);
 
-        GameCharacter moon = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter moon = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.HEALING, 100, 200, 300);
 
-        GameCharacter sun = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter sun = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.AOE, 100, 200, 300);
 
-        GameCharacter star = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter star = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.CROWD_CONTROL, 100, 200, 300);
 
-        GameCharacter astroid = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter astroid = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.REVIVE, 100, 200, 300);
         
         System.out.println(party.addMember(arthur));
-        System.out.println(party.addMember(theSeparateArthur));
-        System.out.println(party.addMember(lancelot));
-        System.out.println(partyAnalyzer.countRoles(party.getMembers()));
-        System.out.println(partyAnalyzer.hasDamage(partyAnalyzer.countRoles(party.getMembers())));
-        System.out.println(party.addMember(theSeparateLancelot));
-        System.out.println(party.addMember(moon));
-        System.out.println(party.addMember(sun));
-        System.out.println(party.addMember(star));
-        System.out.println(party.addMember(astroid));
-        System.out.println(partyAnalyzer.countRoles(party.getMembers()));
-        System.out.println(partyAnalyzer.hasComplementaryRole(partyAnalyzer.countRoles(party.getMembers())));
-        System.out.println(partyAnalyzer.countDamageRoles(partyAnalyzer.countRoles(party.getMembers())));
-        System.out.println(partyAnalyzer.countComplementaryRoles(partyAnalyzer.countRoles(party.getMembers())));
-        System.out.println(partyAnalyzer.calculateRoleRating(partyAnalyzer.countRoles(party.getMembers())));
+        // System.out.println(party.addMember(theSeparateArthur));
+        // System.out.println(party.addMember(lancelot));
+        // System.out.println(party.addMember(theSeparateLancelot));
+        // System.out.println(party.addMember(moon));
+        // System.out.println(party.addMember(sun));
+        // System.out.println(party.addMember(star));
+        // System.out.println(party.addMember(astroid));
+        System.out.println(partyAnalyzer.countAbilityTypes(party.getMembers()));
+        System.out.println(partyAnalyzer.calculateCategorySpread(partyAnalyzer.countAbilityTypes(party.getMembers())));
+        System.out.println(partyAnalyzer.countUniqueAbilities(partyAnalyzer.countAbilityTypes(party.getMembers())));
+        System.out.println(partyAnalyzer.calculateAbilityRating(partyAnalyzer.countAbilityTypes(party.getMembers())));
+        
 
         
     }
