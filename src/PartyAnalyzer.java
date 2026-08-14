@@ -196,26 +196,141 @@ public class PartyAnalyzer {
             return 1;
         }
     }
+    /* Stat calculation section */
+
+    public int calculateTotalAttack(List<GameCharacter> members){
+        if (members == null){
+            return 0;
+        }
+        int totalAttack = 0;
+        for (int i = 0; i < members.size(); i++){
+            totalAttack += members.get(i).getAttack();
+        }
+        return totalAttack;
+    }
+
+    public int calculateTotalDefense(List<GameCharacter> members){
+        if (members == null){
+            return 0;
+        }
+        int totalDefense = 0;
+        for (int i = 0; i < members.size(); i++){
+            totalDefense += members.get(i).getDefense();
+        }
+        return totalDefense;
+    }
+
+
+    public int calculateTotalHitpoints(List<GameCharacter> members){
+        if (members == null){
+            return 0;
+        }
+        int totalHitpoints = 0;
+        for (int i = 0; i < members.size(); i++){
+            totalHitpoints += members.get(i).getHitpoints();
+        }
+        return totalHitpoints;
+    }
+    public double normalizeAttack(List<GameCharacter> members){
+        if (members == null){
+            return 0.0;
+        }
+        int partySize = members.size();
+        if (partySize < 2){
+            return 0.0;
+        }
+        int totalAttack = calculateTotalAttack(members);
+        int expectedAttack = partySize * 100;
+        double normalizeAttack = (double)totalAttack/expectedAttack;
+        return normalizeAttack;
+    }
+    public double normalizeDefense(List<GameCharacter> members){
+        if (members == null){
+            return 0.0;
+        }
+        int partySize = members.size();
+        if (partySize < 2){
+            return 0.0;
+        }
+        int totalDefense = calculateTotalDefense(members);
+        int expectedDefense = partySize *100;
+        double normalizeDefense = (double)totalDefense/expectedDefense;
+        return normalizeDefense;
+    }
+    public double normalizeHitpoints(List<GameCharacter> members){
+        if (members == null){
+            return 0.0;
+        }
+        int partySize = members.size();
+        if (partySize < 2){
+            return 0.0;
+        }
+        int totalHitpoints = calculateTotalHitpoints(members);
+        int expectedHitpoints = partySize * 300;
+        double normalizeHitpoints = (double)totalHitpoints/expectedHitpoints;
+        return normalizeHitpoints;
+    }
+
+    public double calculateStatSpread(List<GameCharacter> members){
+        if (members == null){
+            return 0;
+        }
+        double attackStatsCount = normalizeAttack(members);
+        double defenseStatsCount = normalizeDefense(members);
+        double hitpointsStatsCount = normalizeHitpoints(members);
+        double findMax = Math.max(attackStatsCount, defenseStatsCount);
+        double maxStat = Math.max(findMax, hitpointsStatsCount);
+        double findMin = Math.min(attackStatsCount, defenseStatsCount);
+        double minStat = Math.min(findMin, hitpointsStatsCount);
+        double statDifference = maxStat - minStat;
+        return statDifference;
+    }
+
+    public int calculateStatRating(List<GameCharacter> members){
+        if (members == null){
+            return 0;
+        }
+        double statDifference = calculateStatSpread(members);
+        int partySize = members.size();
+        if (partySize < 2){
+            return 0;
+        }
+        if (statDifference <= 0.10){
+            return 5;
+        }
+        else if (statDifference <= 0.30){
+            return 4;
+        }
+        else if (statDifference <= 0.60){
+            return 3;
+        }
+        else if (statDifference <= 1.00){
+            return 2;
+        }
+        else {
+            return 1;
+        }
+    }
 
     public static void main(String[] args){
         Party party = new Party();
         PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
 
-        GameCharacter arthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 200, 300);
+        GameCharacter arthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 100, 300);
 
-        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.MAGE, Role.RANGED_DAMAGE, AbilityType.TAUNT, 100, 200, 300);
+        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.MAGE, Role.RANGED_DAMAGE, AbilityType.TAUNT, 100, 100, 300);
 
-        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.BUFF, 100, 200, 300);
+        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.BUFF, 100, 100, 300);
 
-        GameCharacter theSeparateLancelot = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.DEBUFF, 100, 200, 300);
+        GameCharacter theSeparateLancelot = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.DEBUFF, 100, 100, 300);
 
-        GameCharacter moon = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.HEALING, 100, 200, 300);
+        GameCharacter moon = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.HEALING, 100, 100, 300);
 
-        GameCharacter sun = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.AOE, 100, 200, 300);
+        GameCharacter sun = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.AOE, 100, 100, 300);
 
-        GameCharacter star = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.CROWD_CONTROL, 100, 200, 300);
+        GameCharacter star = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.CROWD_CONTROL, 100, 100, 300);
 
-        GameCharacter astroid = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.REVIVE, 100, 200, 300);
+        GameCharacter astroid = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.REVIVE, 100, 100, 300);
         
         System.out.println(party.addMember(arthur));
         // System.out.println(party.addMember(theSeparateArthur));
@@ -224,11 +339,14 @@ public class PartyAnalyzer {
         // System.out.println(party.addMember(moon));
         // System.out.println(party.addMember(sun));
         // System.out.println(party.addMember(star));
-        // System.out.println(party.addMember(astroid));
-        System.out.println(partyAnalyzer.countAbilityTypes(party.getMembers()));
-        System.out.println(partyAnalyzer.calculateCategorySpread(partyAnalyzer.countAbilityTypes(party.getMembers())));
-        System.out.println(partyAnalyzer.countUniqueAbilities(partyAnalyzer.countAbilityTypes(party.getMembers())));
-        System.out.println(partyAnalyzer.calculateAbilityRating(partyAnalyzer.countAbilityTypes(party.getMembers())));
+        // System.out.println(party.addMember(null));
+        System.out.println(partyAnalyzer.normalizeAttack(party.getMembers()));
+        System.out.println(partyAnalyzer.normalizeDefense(party.getMembers()));
+        System.out.println(partyAnalyzer.normalizeHitpoints(party.getMembers()));
+        System.out.println(partyAnalyzer.calculateStatSpread(party.getMembers()));
+        System.out.println(partyAnalyzer.calculateStatRating(party.getMembers()));
+
+       
         
 
         
