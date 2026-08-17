@@ -311,44 +311,4 @@ public class PartyAnalyzer {
             return 1;
         }
     }
-
-    public static void main(String[] args){
-        Party party = new Party();
-        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
-
-        GameCharacter arthur = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 100, 300);
-
-        GameCharacter lancelot = new GameCharacter("Lancelot", CharacterClass.MAGE, Role.RANGED_DAMAGE, AbilityType.TAUNT, 100, 100, 300);
-
-        GameCharacter theSeparateArthur = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.BUFF, 100, 100, 300);
-
-        GameCharacter theSeparateLancelot = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.DEBUFF, 100, 100, 300);
-
-        GameCharacter moon = new GameCharacter("Arthur", CharacterClass.RANGER, Role.RANGED_DAMAGE, AbilityType.HEALING, 100, 100, 300);
-
-        GameCharacter sun = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.AOE, 100, 100, 300);
-
-        GameCharacter star = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.CROWD_CONTROL, 100, 100, 300);
-
-        GameCharacter astroid = new GameCharacter("Arthur", CharacterClass.RANGER, Role.MELEE_DAMAGE, AbilityType.REVIVE, 100, 100, 300);
-        
-        System.out.println(party.addMember(arthur));
-        // System.out.println(party.addMember(theSeparateArthur));
-        // System.out.println(party.addMember(lancelot));
-        // System.out.println(party.addMember(theSeparateLancelot));
-        // System.out.println(party.addMember(moon));
-        // System.out.println(party.addMember(sun));
-        // System.out.println(party.addMember(star));
-        // System.out.println(party.addMember(null));
-        System.out.println(partyAnalyzer.normalizeAttack(party.getMembers()));
-        System.out.println(partyAnalyzer.normalizeDefense(party.getMembers()));
-        System.out.println(partyAnalyzer.normalizeHitpoints(party.getMembers()));
-        System.out.println(partyAnalyzer.calculateStatSpread(party.getMembers()));
-        System.out.println(partyAnalyzer.calculateStatRating(party.getMembers()));
-
-       
-        
-
-        
-    }
 }

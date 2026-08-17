@@ -10,3 +10,5 @@ out/
 
 # Logs
 *.log
+# Maven build output
+target/
