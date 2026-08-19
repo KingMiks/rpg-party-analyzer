@@ -10,13 +10,13 @@ public class GameCharacter {
     public GameCharacter(String name,CharacterClass characterClass,Role role,
         AbilityType abilityType,int attack,int defense,int hitpoints)
         {
-        this.name = name;
-        this.characterClass = characterClass;
-        this.role = role;
-        this.abilityType = abilityType;
-        this.attack = attack;
-        this.defense = defense;
-        this.hitpoints = hitpoints;
+        setName(name);
+        setCharacterClass(characterClass);
+        setRole(role);
+        setAbilityType(abilityType);
+        setAttack(attack);
+        setDefense(defense);
+        setHitpoints(hitpoints);
 
     }
     /*Getter methods */
@@ -43,15 +43,48 @@ public class GameCharacter {
     }
     /*Setter methods */
     public void setName(String name){
+        if (name == null){
+            throw new IllegalArgumentException();
+        }
+        if (name.isBlank()){
+            throw new IllegalArgumentException();
+        }
         this.name = name;
     }
     public void setAttack(int attack){
+        if (attack < 0){
+            throw new IllegalArgumentException();
+        }
         this.attack = attack;
     }
     public void setDefense(int defense){
+        if (defense < 0){
+            throw new IllegalArgumentException();
+        }
         this.defense = defense;
     }
     public void setHitpoints(int hitpoints){
+        if (hitpoints < 0){
+            throw new IllegalArgumentException();
+        }
         this.hitpoints = hitpoints;
+    }
+    public void setRole(Role role){
+        if (role == null){
+            throw new IllegalArgumentException();
+        }
+        this.role = role;
+    }
+    public void setCharacterClass(CharacterClass characterClass){
+        if (characterClass == null){
+            throw new IllegalArgumentException();
+        }
+        this.characterClass = characterClass;
+    }
+    public void setAbilityType(AbilityType abilityType){
+        if (abilityType == null){
+            throw new IllegalArgumentException();
+        }
+        this.abilityType = abilityType;
     }
 }

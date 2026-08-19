@@ -177,4 +177,35 @@ public class PartyTest {
         assertTrue(empty);
         assertEquals(0, party.getMemberCount());
     }
+
+    @Test
+    void addMemberSuccessfullyAddsValidMemberWithSimilarValues() {
+        Party party = new Party();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            100,
+            100,
+            300
+        );
+        GameCharacter arthur2 = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            100,
+            100,
+            300
+        );
+
+        boolean result = party.addMember(arthur);
+        boolean nextResult = party.addMember(arthur2);
+
+        assertTrue(result);
+        assertTrue(nextResult);
+        assertEquals(2, party.getMemberCount());
+    }
+
 }

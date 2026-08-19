@@ -1049,11 +1049,326 @@ public class PartyAnalyzerTest {
     
         assertEquals(0, partyAnalyzer.calculateStatRating(members));
     }
+    @Test
+    void testTotalAttackCalculationWithNull() {
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            1000,
+            100,
+            300
+        );
+        List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(null);
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            partyAnalyzer.calculateTotalAttack(members);
+        });
+    }
+    @Test
+    void testTotalRoleCountwithNull() {
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            1000,
+            100,
+            300
+        );
+        List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(null);
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            partyAnalyzer.countRoles(members);
+        });
+    }
+    @Test
+    void testTotalAbilityCountWithNull() {
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            1000,
+            100,
+            300
+        );
+        List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(null);
 
+        assertThrows(IllegalArgumentException.class, () -> {
+            partyAnalyzer.countAbilityTypes(members);
+        });
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfFive(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            100,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
 
+        assertEquals(5, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfFourJustAboveThreshold(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            102,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
 
+        assertEquals(4, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfFour(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            140,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
 
+        assertEquals(4, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfThreeJustAboveThreshold(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            142,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
 
+        assertEquals(3, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfThree(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            200,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
+
+        assertEquals(3, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfTwoJustAboveThreshold(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            120,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            202,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
+
+        assertEquals(2, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfTwo(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            300,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            100,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
+
+        assertEquals(2, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfStatRatingReturnsExpectedValueOfOneAboveThreshold(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        GameCharacter arthur = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.SHIELD,
+            100,
+            100,
+            300
+        );
+    GameCharacter merlin = new GameCharacter(
+            "Arthur",
+            CharacterClass.WARRIOR,
+            Role.MELEE_DAMAGE,
+            AbilityType.TAUNT,
+            302,
+            100,
+            300
+        );
+    List<GameCharacter> members = new ArrayList<>();
+        members.add(arthur);
+        members.add(merlin);
+
+        assertEquals(1, partyAnalyzer.calculateStatRating(members));
+    }
+    @Test
+    void testIfCountRolesRatingReturnsCorrectRatingWithOddParties(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        Map<Role, Integer> roleCounts = new HashMap<>();
+        roleCounts.put(Role.MELEE_DAMAGE, 2);
+        roleCounts.put(Role.TANK, 1);
+        int results = partyAnalyzer.calculateRoleRating(roleCounts);
+        assertEquals(5, results);
+    }
+    @Test
+    void testRoleCountRatingWithMoreComplementaryRoles(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        Map<Role, Integer> roleCounts = new HashMap<>();
+        roleCounts.put(Role.MELEE_DAMAGE, 1);
+        roleCounts.put(Role.TANK, 2);
+        int results = partyAnalyzer.calculateRoleRating(roleCounts);
+        assertEquals(5, results);
+    }
+    @Test
+    void testRoleCountRatingWithSkewedOddPartyNumber(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        Map<Role, Integer> roleCounts = new HashMap<>();
+        roleCounts.put(Role.MELEE_DAMAGE, 3);
+        int results = partyAnalyzer.calculateRoleRating(roleCounts);
+        assertEquals(4, results);
+    }
+    @Test
+    void testIfCountAbilityRatingReturnsCorrectRatingWithOddParties(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        Map<AbilityType, Integer> abilityCounts = new HashMap<>();
+        abilityCounts.put(AbilityType.SHIELD, 2);
+        abilityCounts.put(AbilityType.AOE, 2);
+        abilityCounts.put(AbilityType.MOBILITY, 1);
+        int results = partyAnalyzer.calculateAbilityRating(abilityCounts);
+        assertEquals(5, results);
+    }
+    @Test
+    void testAbilityCountRatingWithSkewedOddPartyNumber(){
+        PartyAnalyzer partyAnalyzer = new PartyAnalyzer();
+        Map<AbilityType, Integer> abilityCounts = new HashMap<>();
+        abilityCounts.put(AbilityType.SHIELD, 4);
+        abilityCounts.put(AbilityType.AOE, 1);
+        abilityCounts.put(AbilityType.MOBILITY, 2);
+        int results = partyAnalyzer.calculateAbilityRating(abilityCounts);
+        assertEquals(4, results);
+    }
 }

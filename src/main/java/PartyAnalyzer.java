@@ -3,6 +3,14 @@ import java.util.List;
 import java.util.Map;
 
 public class PartyAnalyzer {
+
+    private void validateMembers(List<GameCharacter> members) {
+    if (members != null && members.contains(null)) {
+        throw new IllegalArgumentException();
+    }
+    }
+
+
     /* Role analysis section */
     public Map<Role, Integer> countRoles(List<GameCharacter> members){
         Map<Role, Integer> countRoles = new HashMap<>();
@@ -10,18 +18,11 @@ public class PartyAnalyzer {
         if (members == null){
             return countRoles;
         }
+        validateMembers(members);
         
         for (int i = 0; i < members.size(); i++){
             Role currentRole = members.get(i).getRole();
-
-            if (!countRoles.containsKey(currentRole)){
-                countRoles.put(currentRole, 1);
-            }
-            else {
-                int currentCount = countRoles.get(currentRole);
-                int updateCount = currentCount + 1;
-                countRoles.put(currentRole, updateCount);
-            }
+            countRoles.put(currentRole, countRoles.getOrDefault(currentRole, 0) + 1);
         }
         return countRoles;
     }
@@ -74,9 +75,7 @@ public class PartyAnalyzer {
         if (partySize < 2){
             return 0;
         }
-        int actualDifference = Math.abs(damageRoles - complementaryRoles);
-        int idealDifference = partySize % 2;
-        int distanceFromIdeal = actualDifference - idealDifference;
+        int distanceFromIdeal = Math.abs(Math.abs(damageRoles - complementaryRoles) - (partySize % 2));
         switch (distanceFromIdeal) {
             case 0:
                 return 5;
@@ -100,18 +99,11 @@ public class PartyAnalyzer {
         if (members == null){
             return countAbilities;
         }
+        validateMembers(members);
 
         for (int i = 0; i < members.size(); i++){
             AbilityType currentAbilityType = members.get(i).getAbilityType();
-
-            if (!countAbilities.containsKey(currentAbilityType)){
-                countAbilities.put(currentAbilityType, 1);
-            }
-            else {
-                int currentCount = countAbilities.get(currentAbilityType);
-                int updateCount = currentCount + 1;
-                countAbilities.put(currentAbilityType, updateCount);
-            }
+            countAbilities.put(currentAbilityType, countAbilities.getOrDefault(currentAbilityType, 0) + 1);
         }
         return countAbilities;
     }
@@ -153,10 +145,8 @@ public class PartyAnalyzer {
         int defensiveAbilityCount = countDefensiveAbilities(countAbilities);
         int enemyInteractionsAbilityCount = countEnemyInteractionAbilities(countAbilities);
         int utilityAbilityCount = countUtilityAbilities(countAbilities);
-        int findMax = Math.max(defensiveAbilityCount, enemyInteractionsAbilityCount);
-        int maxCategory = Math.max(findMax, utilityAbilityCount);
-        int findMin = Math.min(defensiveAbilityCount, enemyInteractionsAbilityCount);
-        int minCategory = Math.min(findMin, utilityAbilityCount);
+        int maxCategory = Math.max(Math.max(defensiveAbilityCount, enemyInteractionsAbilityCount),utilityAbilityCount);
+        int minCategory = Math.min(Math.min(defensiveAbilityCount, enemyInteractionsAbilityCount),utilityAbilityCount);
         int categoryDifference = maxCategory - minCategory;
         return categoryDifference;
     }
@@ -202,6 +192,7 @@ public class PartyAnalyzer {
         if (members == null){
             return 0;
         }
+        validateMembers(members);
         int totalAttack = 0;
         for (int i = 0; i < members.size(); i++){
             totalAttack += members.get(i).getAttack();
@@ -213,6 +204,7 @@ public class PartyAnalyzer {
         if (members == null){
             return 0;
         }
+        validateMembers(members);
         int totalDefense = 0;
         for (int i = 0; i < members.size(); i++){
             totalDefense += members.get(i).getDefense();
@@ -225,6 +217,7 @@ public class PartyAnalyzer {
         if (members == null){
             return 0;
         }
+        validateMembers(members);
         int totalHitpoints = 0;
         for (int i = 0; i < members.size(); i++){
             totalHitpoints += members.get(i).getHitpoints();
@@ -241,8 +234,8 @@ public class PartyAnalyzer {
         }
         int totalAttack = calculateTotalAttack(members);
         int expectedAttack = partySize * 100;
-        double normalizeAttack = (double)totalAttack/expectedAttack;
-        return normalizeAttack;
+        double normalizedAttack = (double) totalAttack/ expectedAttack;
+        return normalizedAttack;
     }
     public double normalizeDefense(List<GameCharacter> members){
         if (members == null){
@@ -254,8 +247,8 @@ public class PartyAnalyzer {
         }
         int totalDefense = calculateTotalDefense(members);
         int expectedDefense = partySize *100;
-        double normalizeDefense = (double)totalDefense/expectedDefense;
-        return normalizeDefense;
+        double normalizedDefense = (double) totalDefense/ expectedDefense;
+        return normalizedDefense;
     }
     public double normalizeHitpoints(List<GameCharacter> members){
         if (members == null){
@@ -267,21 +260,19 @@ public class PartyAnalyzer {
         }
         int totalHitpoints = calculateTotalHitpoints(members);
         int expectedHitpoints = partySize * 300;
-        double normalizeHitpoints = (double)totalHitpoints/expectedHitpoints;
-        return normalizeHitpoints;
+        double normalizedHitpoints = (double) totalHitpoints/ expectedHitpoints;
+        return normalizedHitpoints;
     }
 
     public double calculateStatSpread(List<GameCharacter> members){
         if (members == null){
             return 0;
         }
-        double attackStatsCount = normalizeAttack(members);
-        double defenseStatsCount = normalizeDefense(members);
-        double hitpointsStatsCount = normalizeHitpoints(members);
-        double findMax = Math.max(attackStatsCount, defenseStatsCount);
-        double maxStat = Math.max(findMax, hitpointsStatsCount);
-        double findMin = Math.min(attackStatsCount, defenseStatsCount);
-        double minStat = Math.min(findMin, hitpointsStatsCount);
+        double attackStats = normalizeAttack(members);
+        double defenseStats = normalizeDefense(members);
+        double hitpointsStats = normalizeHitpoints(members);
+        double maxStat = Math.max(Math.max(attackStats, defenseStats), hitpointsStats);
+        double minStat = Math.min(Math.min(attackStats, defenseStats), hitpointsStats);
         double statDifference = maxStat - minStat;
         return statDifference;
     }
@@ -292,19 +283,20 @@ public class PartyAnalyzer {
         }
         double statDifference = calculateStatSpread(members);
         int partySize = members.size();
+        double roundedStatDifference = Math.round(statDifference * 100.0)/ 100.0;
         if (partySize < 2){
             return 0;
         }
-        if (statDifference <= 0.10){
+        if (roundedStatDifference <= 0.10){
             return 5;
         }
-        else if (statDifference <= 0.30){
+        else if (roundedStatDifference <= 0.30){
             return 4;
         }
-        else if (statDifference <= 0.60){
+        else if (roundedStatDifference <= 0.60){
             return 3;
         }
-        else if (statDifference <= 1.00){
+        else if (roundedStatDifference <= 1.00){
             return 2;
         }
         else {
