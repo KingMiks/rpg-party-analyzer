@@ -18,6 +18,15 @@ public class PartyAnalyzer {
     }
 
     /* Role analysis section */
+
+    /**
+     * Counts how many party members have each role.
+     *
+     * @param members the list of party members to analyze.
+     * @return a map containing each role and its number of occurrences;
+     *         returns an empty map if the list is null.
+     * @throws IllegalArgumentException if the list contains a null member.
+     */
     public Map<Role, Integer> countRoles(List<GameCharacter> members) {
         Map<Role, Integer> countRoles = new HashMap<>();
 
@@ -48,6 +57,14 @@ public class PartyAnalyzer {
                 (countRoles.containsKey(Role.TANK)) || (countRoles.containsKey(Role.SUPPORT));
     }
 
+    /**
+     * Determines whether the party contains both a damage role and a complementary
+     * role.
+     *
+     * @param countRoles a map containing each role and its number of occurrences.
+     * @return true if the party contains at least one damage role and at least one
+     *         complementary role; false otherwise or if the map is null.
+     */
     public boolean hasSynergy(Map<Role, Integer> countRoles) {
         if (countRoles == null) {
             return false;
@@ -75,6 +92,15 @@ public class PartyAnalyzer {
         return tankRole + supportRole + controlRole + healerRole;
     }
 
+    /**
+     * Calculates a role-balance rating based on the distribution of damage
+     * and complementary roles in the party.
+     *
+     * @param countRoles a map containing each role and its number of party members.
+     * @return a rating from 1 to 5, where higher values indicate better role
+     *         balance;
+     *         returns 0 if the map is null or represents fewer than two members.
+     */
     public int calculateRoleRating(Map<Role, Integer> countRoles) {
         if (countRoles == null) {
             return 0;
@@ -102,6 +128,15 @@ public class PartyAnalyzer {
         }
     }
     /* Ability analysis section */
+
+    /**
+     * Counts how many party members have each ability type.
+     *
+     * @param members the list of party members to analyze.
+     * @return a map containing each ability type and its number of occurrences;
+     *         returns an empty map if the list is null.
+     * @throws IllegalArgumentException if the list contains a null member.
+     */
 
     public Map<AbilityType, Integer> countAbilityTypes(List<GameCharacter> members) {
         Map<AbilityType, Integer> countAbilities = new HashMap<>();
@@ -138,6 +173,13 @@ public class PartyAnalyzer {
         return crowdControlAbility + tauntAbility + aoeAbility;
     }
 
+    /**
+     * Counts the number of unique ability types represented in the party.
+     *
+     * @param countAbilities a map containing each ability type and its number of
+     *                       occurrences.
+     * @return the number of unique ability types, or 0 if the map is null.
+     */
     private int countUtilityAbilities(Map<AbilityType, Integer> countAbilities) {
         if (countAbilities == null) {
             return 0;
@@ -168,6 +210,17 @@ public class PartyAnalyzer {
         return countAbilities.size();
     }
 
+    /**
+     * Calculates an ability type balance rating based on the distribution of
+     * defensive abilities,
+     * enemy interaction abilities, and utility abilities.
+     *
+     * @param countAbilities a map containing each ability type and its number of
+     *                       party members.
+     * @return a rating from 1 to 5, where higher values indicate better ability
+     *         type balance;
+     *         returns 0 if the map is null or represents fewer than two members.
+     */
     public int calculateAbilityRating(Map<AbilityType, Integer> countAbilities) {
         if (countAbilities == null) {
             return 0;
@@ -194,6 +247,13 @@ public class PartyAnalyzer {
     }
     /* Stat calculation section */
 
+    /**
+     * Calculates the total attack value of all party members.
+     *
+     * @param members the list of party members whose attack values are totaled.
+     * @return the combined attack value of all members, or 0 if the list is null.
+     * @throws IllegalArgumentException if the list contains a null member.
+     */
     public int calculateTotalAttack(List<GameCharacter> members) {
         if (members == null) {
             return 0;
@@ -206,6 +266,13 @@ public class PartyAnalyzer {
         return totalAttack;
     }
 
+    /**
+     * Calculates the total defense value of all party members.
+     *
+     * @param members the list of party members whose defense values are totaled.
+     * @return the combined defense value of all members, or 0 if the list is null.
+     * @throws IllegalArgumentException if the list contains a null member.
+     */
     public int calculateTotalDefense(List<GameCharacter> members) {
         if (members == null) {
             return 0;
@@ -218,6 +285,13 @@ public class PartyAnalyzer {
         return totalDefense;
     }
 
+    /**
+     * Calculates the total hitpoints of all party members.
+     *
+     * @param members the list of party members whose hitpoints are totaled.
+     * @return the combined hitpoints of all members, or 0 if the list is null.
+     * @throws IllegalArgumentException if the list contains a null member.
+     */
     public int calculateTotalHitpoints(List<GameCharacter> members) {
         if (members == null) {
             return 0;
@@ -285,6 +359,16 @@ public class PartyAnalyzer {
         return statDifference;
     }
 
+    /**
+     * Calculates a party's stat-balance rating based on the distribution of
+     * normalized
+     * attack, defense, and hitpoints values.
+     *
+     * @param members a list containing the party members whose stats are analyzed.
+     * @return a rating from 1 to 5, where higher values represent better stat
+     *         balance;
+     *         returns 0 if the list is null or contains fewer than two members.
+     */
     public int calculateStatRating(List<GameCharacter> members) {
         if (members == null) {
             return 0;
