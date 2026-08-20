@@ -2,280 +2,277 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameCharacterTest{
-    
+public class GameCharacterTest {
+
     @Test
     void creatingCharacterWithNegativeAttackThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            -1,
-            100,
-            300
-        );
+            new GameCharacter(
+                    "Arthur",
+                    CharacterClass.WARRIOR,
+                    Role.MELEE_DAMAGE,
+                    AbilityType.SHIELD,
+                    -1,
+                    100,
+                    300);
         });
     }
+
     @Test
     void creatingCharacterWithNegativeDefenseThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            -1,
-            300
-        );
+            new GameCharacter(
+                    "Arthur",
+                    CharacterClass.WARRIOR,
+                    Role.MELEE_DAMAGE,
+                    AbilityType.SHIELD,
+                    100,
+                    -1,
+                    300);
         });
     }
+
     @Test
     void creatingCharacterWithNegativeHitpointsThrowsException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            -300
-        );
+            new GameCharacter(
+                    "Arthur",
+                    CharacterClass.WARRIOR,
+                    Role.MELEE_DAMAGE,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    -300);
         });
     }
+
     @Test
     void setAttackRejectsNegativeValue() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
         assertThrows(IllegalArgumentException.class, () -> {
             member.setAttack(-1);
         });
     }
+
     @Test
     void setDefenseRejectsNegativeValue() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
         assertThrows(IllegalArgumentException.class, () -> {
             member.setDefense(-1);
         });
     }
+
     @Test
     void setHitpointsRejectsNegativeValue() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
         assertThrows(IllegalArgumentException.class, () -> {
             member.setHitpoints(-1);
         });
     }
+
+    @Test
+    void creatingCharacterWithNullCharacterClassThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new GameCharacter(
+                    "Arthur",
+                    null,
+                    Role.TANK,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    300);
+        });
+    }
+
     @Test
     void creatingCharacterWithNullRoleThrowsException() {
-        
+
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            null,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+            new GameCharacter(
+                    "Arthur",
+                    CharacterClass.WARRIOR,
+                    null,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    300);
         });
     }
+
     @Test
-    void creatingCharacterWithNullClassThrowsException() {
-        
+    void creatingCharacterWithNullAbilityTypeThrowsException() {
+
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            null,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+            new GameCharacter(
+                    "Arthur",
+                    CharacterClass.WARRIOR,
+                    Role.TANK,
+                    null,
+                    100,
+                    100,
+                    300);
         });
     }
-    @Test
-    void creatingCharacterWithNullAbilityThrowsException() {
-        
-        assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            null,
-            100,
-            100,
-            300
-        );
-        });
-    }
+
     @Test
     void creatingCharacterWithNullNameThrowsException() {
-        
+
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            null,
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+            new GameCharacter(
+                    null,
+                    CharacterClass.WARRIOR,
+                    Role.TANK,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    300);
         });
     }
+
     @Test
     void creatingCharacterWithBlankNameThrowsException() {
-        
+
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+            new GameCharacter(
+                    "",
+                    CharacterClass.WARRIOR,
+                    Role.TANK,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    300);
         });
     }
+
     @Test
-    void creatingCharacterWithWhiteSpaceNameThrowsException() {
-        
+    void creatingCharacterWithWhitespaceNameThrowsException() {
+
         assertThrows(IllegalArgumentException.class, () -> {
-            GameCharacter member = new GameCharacter(
-            "    ",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+            new GameCharacter(
+                    "    ",
+                    CharacterClass.WARRIOR,
+                    Role.TANK,
+                    AbilityType.SHIELD,
+                    100,
+                    100,
+                    300);
         });
     }
+
     @Test
-    void setRoleWithNullRejectsNull() {
+    void setRoleThrowsExceptionForNull() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setRole(null);
         });
     }
+
     @Test
-    void setCharacterClassWithNullRejectsNull() {
+    void setCharacterClassThrowsExceptionForNull() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setCharacterClass(null);
         });
     }
+
     @Test
-    void setAbilityTypeWithNullRejectsNull() {
+    void setAbilityTypeThrowsExceptionForNull() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setAbilityType(null);
         });
     }
+
     @Test
-    void setNameWithNullRejectsNull() {
+    void setNameThrowsExceptionForNull() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setName(null);
         });
     }
+
     @Test
-    void setNameWithEmptyStringRejectsEmptyString() {
+    void setNameThrowsExceptionForEmptyString() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setName("");
         });
     }
+
     @Test
-    void setNameWithWhiteSpaceRejectsWhiteSpace() {
+    void setNameThrowsExceptionForWhitespace() {
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.TANK,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.TANK,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
         assertThrows(IllegalArgumentException.class, () -> {
             member.setName("    ");
         });
     }
-
 }

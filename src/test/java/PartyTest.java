@@ -9,61 +9,61 @@ public class PartyTest {
     void addMemberSuccessfullyAddsValidMember() {
         Party party = new Party();
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
 
-        boolean result = party.addMember(member);
+        boolean added = party.addMember(member);
 
-        assertTrue(result);
+        assertTrue(added);
         assertEquals(1, party.getMemberCount());
     }
 
     @Test
-    void addMembersUsingNullValue() {
+    void addMemberRejectsNull() {
         Party party = new Party();
 
-        boolean result = party.addMember(null);
+        boolean rejected = party.addMember(null);
 
-        assertFalse(result);
+        assertFalse(rejected);
         assertEquals(0, party.getMemberCount());
     }
 
     @Test
-     void addMemberRejectsDuplicateMember() {
+    void addMemberRejectsDuplicateMember() {
         Party party = new Party();
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
 
-        boolean first_result = party.addMember(member);
-        boolean second_result = party.addMember(member);
+        boolean original = party.addMember(member);
+        boolean duplicate = party.addMember(member);
 
-        assertTrue(first_result);
-        assertFalse(second_result);
+        assertTrue(original);
+        assertFalse(duplicate);
         assertEquals(1, party.getMemberCount());
     }
 
     @Test
-    void addMembersTilPartyIsMaxed() {
+    void addMemberRejectsMemberWhenPartyIsFull() {
         Party party = new Party();
 
-        for (int i = 0; i < 8; i++){
-            GameCharacter member = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 100, 300);
+        for (int i = 0; i < 8; i++) {
+            GameCharacter member = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE,
+                    AbilityType.SHIELD, 100, 100, 300);
             party.addMember(member);
         }
-        GameCharacter ninthMember = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE, AbilityType.SHIELD, 100, 100, 300);
+        GameCharacter ninthMember = new GameCharacter("Arthur", CharacterClass.WARRIOR, Role.MELEE_DAMAGE,
+                AbilityType.SHIELD, 100, 100, 300);
         boolean maxedParty = party.addMember(ninthMember);
 
         assertFalse(maxedParty);
@@ -74,76 +74,74 @@ public class PartyTest {
     void removeMemberRemovesExistingMember() {
         Party party = new Party();
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
 
-        boolean result = party.addMember(member);
+        boolean added = party.addMember(member);
 
-        assertTrue(result);
+        assertTrue(added);
         assertEquals(1, party.getMemberCount());
 
-        boolean nextResult = party.removeMember(member);
-        assertTrue(nextResult);
+        boolean removed = party.removeMember(member);
+        assertTrue(removed);
         assertEquals(0, party.getMemberCount());
     }
 
     @Test
-    void removeMemberWithEmptyParty(){
+    void removeMemberReturnsFalseForNullMember() {
         Party party = new Party();
-        
-        boolean result = party.removeMember(null);
-        assertFalse(result);
+
+        boolean removed = party.removeMember(null);
+        assertFalse(removed);
         assertEquals(0, party.getMemberCount());
     }
 
     @Test
-    void removeNonExistentMember(){
-        Party party = new Party();
-        GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-
-        boolean result = party.removeMember(member);
-        assertFalse(result);
-        assertEquals(0, party.getMemberCount());
-    }
-
-    @Test
-    void getMembersProtectsInternalList(){
+    void removeMemberReturnsFalseForMissingMember() {
         Party party = new Party();
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        boolean result = party.addMember(member);
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+
+        boolean removed = party.removeMember(member);
+        assertFalse(removed);
+        assertEquals(0, party.getMemberCount());
+    }
+
+    @Test
+    void getMembersProtectsInternalList() {
+        Party party = new Party();
+        GameCharacter member = new GameCharacter(
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+        boolean added = party.addMember(member);
 
         List<GameCharacter> copy = party.getMembers();
-        boolean nextResult = copy.remove(member);
+        boolean removed = copy.remove(member);
 
-        assertTrue(result);
-        assertTrue(nextResult);
+        assertTrue(added);
+        assertTrue(removed);
         assertEquals(1, party.getMemberCount());
 
     }
+
     @Test
-    void getMembersReturnsDefensiveCopy(){
+    void getMembersReturnsDefensiveCopy() {
         Party party = new Party();
 
         List<GameCharacter> firstCopy = party.getMembers();
@@ -153,27 +151,26 @@ public class PartyTest {
     }
 
     @Test
-    void checkIfPartyIsEmpty(){
+    void isEmptyReflectsPartyState() {
         Party party = new Party();
         GameCharacter member = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
-        boolean result = party.addMember(member);
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
+        boolean added = party.addMember(member);
         boolean notEmpty = party.isEmpty();
 
-        assertTrue(result);
+        assertTrue(added);
         assertFalse(notEmpty);
         assertEquals(1, party.getMemberCount());
 
-        boolean nextResult = party.removeMember(member);
+        boolean removed = party.removeMember(member);
         boolean empty = party.isEmpty();
-        assertTrue(nextResult);
+        assertTrue(removed);
         assertTrue(empty);
         assertEquals(0, party.getMemberCount());
     }
@@ -182,29 +179,27 @@ public class PartyTest {
     void addMemberSuccessfullyAddsValidMemberWithSimilarValues() {
         Party party = new Party();
         GameCharacter arthur = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
         GameCharacter arthur2 = new GameCharacter(
-            "Arthur",
-            CharacterClass.WARRIOR,
-            Role.MELEE_DAMAGE,
-            AbilityType.SHIELD,
-            100,
-            100,
-            300
-        );
+                "Arthur",
+                CharacterClass.WARRIOR,
+                Role.MELEE_DAMAGE,
+                AbilityType.SHIELD,
+                100,
+                100,
+                300);
 
-        boolean result = party.addMember(arthur);
-        boolean nextResult = party.addMember(arthur2);
+        boolean added = party.addMember(arthur);
+        boolean copyAdded = party.addMember(arthur2);
 
-        assertTrue(result);
-        assertTrue(nextResult);
+        assertTrue(added);
+        assertTrue(copyAdded);
         assertEquals(2, party.getMemberCount());
     }
 
